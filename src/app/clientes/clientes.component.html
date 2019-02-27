@@ -1,0 +1,87 @@
+<div class="card border-light mb-3">
+  <div class="card-header">List Of Clients</div>
+  <div class="card-body text-secondary">
+      <div class="my-2 text-left">
+        <button class="btn btn-rounded btn-outline-primary rounded-circle" type="button" [routerLink]="['/clients/formulario']" data-toggle="tooltip" data-placement="top" title="Add client"><i class="material-icons md-18">person_add</i></button>
+      </div>
+    <div class="alert alert-info" *ngIf="clients?.length==0">
+      No hay registros en la base de datos
+    </div>
+    <table class="table table-bordered table-striped" *ngIf="clients?.length>0">
+      <thead class="text-primary text-center">
+        <tr>
+          <th>Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let clients of clients">
+          <td>{{ clients.name }}</td>
+          <td>{{ clients.lastName }}</td>
+          <td>{{ clients.email }}</td>
+          <td align="center">
+              <button type="button" name="update" class="btn btn-outline-primary rounded-circle" data-toggle="modal" data-target="#exampleModal" (click)='updt(clients)' data-placement="top" title="Update client">
+                <i class="material-icons">refresh</i>
+              </button>
+              <button type="button" name="eliminar" (click)='delete(clients)' class="btn btn-outline-danger btn-sm rounded-circle" data-toggle="tooltip" data-placement="top" title="Delete client">
+                  <i class="material-icons">clear</i>
+              </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <paginator-nav *ngIf="paginador" [paginador]="paginador"></paginator-nav>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modificar</h5>
+        <button type="button" class="close rounded-circle" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <label for="name" class="col-form-label">Name</label>
+                <input type="text" class="form-control" [(ngModel)]="clienteEdit.name" name="name" #name="ngModel">
+                <div class="alert alert-danger" *ngIf="name.invalid && (name.dirty || name.touched)">
+                  <div *ngIf="name.errors.required">
+                    El campo name es requerido
+                  </div>
+                  <div *ngIf="name.errors.minlength">
+                    El name dene tener al menos 4 caracteres
+                  </div>
+                </div>
+
+        <label for="lastName" class="col-form-label">Last Name</label>
+              <input type="text" class="form-control" [(ngModel)]="clienteEdit.lastName" name="lastName" #lastName="ngModel">
+              <div class="alert alert-danger" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                <div *ngIf="lastName.errors.required">
+                  El campo lastName es requerido
+                </div>
+              </div>
+
+        <label for="email" class="col-form-label">Email</label>
+                <input type="text" class="form-control" [(ngModel)]="clienteEdit.email" name="email" #email="ngModel">
+                <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+                  <div *ngIf="email.errors.required">
+                    El campo Email es requerido
+                  </div>
+                  <div *ngIf="email.errors.email">
+                    Email debe tener un formato válido
+                  </div>
+                </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary rounded-circle" (click)='updateClient()' data-dismiss="modal"><i class="material-icons">done</i></button>
+        <button type="button" class="btn btn-danger rounded-circle" data-dismiss="modal"><i class="material-icons">clear</i></button>
+      </div>
+    </div>
+  </div>
+</div>
